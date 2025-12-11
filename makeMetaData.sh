@@ -16,11 +16,9 @@ if [ ! -d "$category_dir" ]; then
     echo "エラー: フォルダ '$category_dir' が見つかりません"
     exit 1
 fi
-# JPGを数値順に並べて <divingsite>_<category>_<連番>.JPG へリネーム
-if ls -1 "$category_dir"/*.JPG >/dev/null 2>&1; then
-    ls -1 "$category_dir"/*.JPG | sort -V | \
-    awk -v site="$divingsite" -v category="$category" '{printf "mv -- \"%s\" \"%s_%s_%d.JPG\"\n", $0, site, category, NR}' | bash
-fi
+
+ls -1 "$category_dir"/*.JPG | sort -V | \
+    awk -v site="$divingsite" -v cat="$category" -v dir="$category_dir" '{printf "mv -- \"%s\" \"%s/%s_%s_%d.JPG\"\n", $0, dir, site, cat, NR}' | sh
 
 # カテゴリフォルダ内の*_template.csvファイルを探す
 template_file=$(find "$category_dir" -maxdepth 1 -name "*_template.csv" | head -n 1)
