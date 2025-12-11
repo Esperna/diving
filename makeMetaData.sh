@@ -1,19 +1,25 @@
 #!/bin/bash
 
 # 引数チェック
-if [ -z "$1" ]; then
-    echo "使用方法: $0 <category>"
-    echo "例: $0 macrofish"
+if [ -z "$2" ]; then
+    echo "使用方法: $0 <divingsite> <category>"
+    echo "例: $0 Aka macrofish"
     exit 1
 fi
 
-category="$1"
-category_dir="$category"
+divingsite="$1"
+category="$2"
+category_dir="$divingsite/$category"
 
 # カテゴリフォルダの存在確認
 if [ ! -d "$category_dir" ]; then
     echo "エラー: フォルダ '$category_dir' が見つかりません"
     exit 1
+fi
+# JPGを数値順に並べて <divingsite>_<category>_<連番>.JPG へリネーム
+if ls -1 "$category_dir"/*.JPG >/dev/null 2>&1; then
+    ls -1 "$category_dir"/*.JPG | sort -V | \
+    awk -v site="$divingsite" -v category="$category" '{printf "mv -- \"%s\" \"%s_%s_%d.JPG\"\n", $0, site, category, NR}' | bash
 fi
 
 # カテゴリフォルダ内の*_template.csvファイルを探す
