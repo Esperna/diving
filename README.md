@@ -1,5 +1,5 @@
 
-# Shutter Stockへのアップロード手順
+# Shutter Stockアップロード用画像rename & metadata生成スクリプト
 
 分類済みのフォルダにある画像をリネームし、Shutter Stock用のメタデータファイルを作成する
 
